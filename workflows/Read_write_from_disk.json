@@ -1,0 +1,173 @@
+{
+  "name": "Read_write_from_disk",
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f6c6d6a5-796e-4023-b721-869ff7acb4a5",
+              "name": "name",
+              "value": "Pavel",
+              "type": "string"
+            },
+            {
+              "id": "7352391d-5fa6-4779-bd97-bd7b415062ca",
+              "name": "task",
+              "value": "n8n learning",
+              "type": "string"
+            },
+            {
+              "id": "6d2c0e0a-aa88-4e23-8d97-2be2459f8e8f",
+              "name": "created_at",
+              "value": "={{$now}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -528,
+        -784
+      ],
+      "id": "27e89ba6-4336-438a-84a4-6141c150f512",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "789e6605-a0b6-42da-82aa-5dc1a4112ee4",
+              "name": "log_text",
+              "value": "={{$json.name}} | {{$json.task}} | {{$json.created_at}}{{ \"\\n\" }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -224,
+        -416
+      ],
+      "id": "8d912f32-2891-4d92-839e-ff8bc231721f",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "operation": "toText",
+        "sourceProperty": "log_text",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        -48,
+        -784
+      ],
+      "id": "197ead09-6e8c-4ee5-bf04-081b2e6559d2",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "/files/task-log.txt",
+        "options": {
+          "append": true
+        }
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1.1,
+      "position": [
+        176,
+        -432
+      ],
+      "id": "67e4313c-fa54-47ef-adfe-36d9754c1e29",
+      "name": "Read/Write Files from Disk"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 1
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -720,
+        -400
+      ],
+      "id": "f33fff25-a764-4654-8c2c-7c84aaa3e557",
+      "name": "Schedule Trigger"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "5a31f51c-1d2c-476c-a8e0-a20bb8568adc",
+  "meta": {
+    "instanceId": "112ca1ef909d394871a68e0ff10fbd482f94b0d863e1713c81320111c87f1ad4"
+  },
+  "id": "BvS03gP0G8ob9qN9",
+  "tags": []
+}
